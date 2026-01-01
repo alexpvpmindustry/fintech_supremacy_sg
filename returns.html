@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free trading returns calculator with compound interest tracking. Calculate how many trades needed to reach $1M. Perfect for day traders, forex, stocks, and crypto investors.">
+    <meta name="keywords" content="trading calculator, compound interest calculator, trading returns, profit calculator, day trading, forex trading, stock trading, crypto trading, investment calculator">
+    <meta name="author" content="Trading Returns Tracker">
+    <meta property="og:title" content="Trading Returns Calculator - Compound Interest Tracker">
+    <meta property="og:description" content="Visualize trading profits with realistic fees. Calculate your path to $1 million with compound returns.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Trading Returns Calculator - Compound Interest Tracker">
+    <meta name="twitter:description" content="Free tool to calculate trading returns with compound interest and fees included.">
+    <title>Trading Returns Calculator | Compound Interest Tracker for Traders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        .summary p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .description {
+            background: #e8eaf6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .faq-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .faq-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+        }
+        .faq-item {
+            margin-bottom: 25px;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        .faq-answer {
+            color: #555;
+            line-height: 1.6;
+            padding-left: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: right;
+            font-weight: 600;
+        }
+        th:first-child {
+            text-align: center;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: right;
+        }
+        td:first-child {
+            text-align: center;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .highlight {
+            background: #fff3cd !important;
+            font-weight: 600;
+        }
+        .positive {
+            color: #28a745;
+        }
+        .currency {
+            font-family: 'Courier New', monospace;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">← Back to Home</a>
+        
+        <h1>📈 Trading Returns Tracker</h1>
+        
+        <div class="description">
+            <p>Welcome to our comprehensive <strong>Trading Returns Calculator</strong> and <strong>compound interest tracker</strong> for active traders. This powerful trading profit calculator helps you visualize how consistent returns compound over time with realistic trading fees included. Whether you're day trading, swing trading, or practicing algorithmic trading strategies, this tool demonstrates the power of compounding returns and helps you understand how many trades it takes to reach significant milestones like $1 million. Perfect for forex traders, stock traders, and crypto investors who want to model their trading performance with 2.8% returns per trade and 0.3% trading fees. Use this free trading calculator to plan your path to financial independence through consistent, disciplined trading.</p>
+        </div>
+        
+        <div class="summary">
+            <p><strong>Starting Principal:</strong> <span class="currency">$15,000.00</span></p>
+            <p><strong>Return per Trade:</strong> 2.8%</p>
+            <p><strong>Fee per Trade:</strong> 0.3%</p>
+            <p><strong>Net Gain per Trade:</strong> 2.5%</p>
+            <p><strong>Trades to reach $1M:</strong> <span id="tradesToMillion"></span></p>
+        </div>
+
+        <div class="table-container">
+            <table id="tradesTable">
+                <thead>
+                    <tr>
+                        <th>Trade #</th>
+                        <th>Returns</th>
+                        <th>Fees</th>
+                        <th>Current Principal</th>
+                        <th>% Change</th>
+                    </tr>
+                </thead>
+                <tbody id="tradesBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="faq-section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Q: How is the net gain per trade calculated?</div>
+                <div class="faq-answer">A: The net gain per trade is calculated by subtracting the fee rate from the return rate. In this calculator, with a 2.8% return and 0.3% fee, your net gain is 2.5% per trade. This means for every $100 in your account, you earn $2.80 but pay $0.30 in fees, netting $2.50 profit.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Is a 2.8% return per trade realistic?</div>
+                <div class="faq-answer">A: While 2.8% per trade is achievable for experienced traders in favorable market conditions, it's important to note that consistent returns are difficult to maintain. This calculator serves as a planning tool to visualize potential growth, but actual trading results will vary based on market conditions, strategy, and risk management. Always trade responsibly and never risk more than you can afford to lose.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Why does it take 170 trades to reach $1 million from $15,000?</div>
+                <div class="faq-answer">A: This is the power of compound interest at work. With a consistent 2.5% net gain per trade, your principal grows exponentially rather than linearly. Each trade's profit becomes part of your new principal, which then generates even more profit on the next trade. This compounding effect accelerates your growth over time, which is why the path from $15,000 to $1 million requires 170 successful trades.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: What happens if I have losing trades?</div>
+                <div class="faq-answer">A: This calculator assumes consistent positive returns on every trade. In real trading, losses are inevitable. A single losing trade can set back your progress significantly because it reduces your principal. For example, a 2.5% loss requires a 2.56% gain just to break even. This is why risk management, stop losses, and proper position sizing are crucial for long-term trading success.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Can I customize the starting principal, return rate, or fees?</div>
+                <div class="faq-answer">A: This calculator is currently set to show results with $15,000 starting capital, 2.8% returns, and 0.3% fees. These parameters are commonly used as benchmarks for active trading strategies. While the current version has fixed parameters, the calculator demonstrates the fundamental principles of compound growth that apply to any trading scenario with consistent percentage returns.</div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-button back-button-bottom">← Back to Home</a>
+    </div>
+
+    <script>
+        const startingPrincipal = 15000;
+        const returnRate = 0.028;
+        const feeRate = 0.003;
+        const netGainRate = returnRate - feeRate;
+        const numTrades = 20;
+        const highlightTrades = [1, 5, 10, 15, 20];
+
+        // Calculate trades to reach $1M
+        function calculateTradesToMillion() {
+            let p = startingPrincipal;
+            let trades = 0;
+            while (p < 1000000) {
+                p = p * (1 + netGainRate);
+                trades++;
+            }
+            return trades;
+        }
+
+        const tradesToMillion = calculateTradesToMillion();
+        document.getElementById('tradesToMillion').textContent = tradesToMillion + ' trades';
+
+        let principal = startingPrincipal;
+        const tbody = document.getElementById('tradesBody');
+
+        for (let i = 1; i <= numTrades; i++) {
+            const returns = principal * returnRate;
+            const fees = principal * feeRate;
+            const newPrincipal = principal + returns - fees;
+            const percentChange = ((newPrincipal - startingPrincipal) / startingPrincipal) * 100;
+
+            const row = document.createElement('tr');
+            if (highlightTrades.includes(i)) {
+                row.classList.add('highlight');
+            }
+
+            row.innerHTML = `
+                <td><strong>${i}</strong></td>
+                <td class="currency positive">$${returns.toFixed(2)}</td>
+                <td class="currency">$${fees.toFixed(2)}</td>
+                <td class="currency"><strong>$${newPrincipal.toFixed(2)}</strong></td>
+                <td class="positive">+${percentChange.toFixed(2)}%</td>
+            `;
+
+            tbody.appendChild(row);
+            principal = newPrincipal;
+        }
+    </script>
+</body>
+</html>
