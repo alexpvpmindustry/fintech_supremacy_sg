@@ -52,6 +52,53 @@
             line-height: 1.6;
             color: #333;
         }
+        .input-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 2px solid #667eea;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        #calculateBtn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #calculateBtn:hover {
+            background: #5568d3;
+        }
+        #calculateBtn:active {
+            transform: scale(0.98);
+        }
         .faq-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -123,14 +170,30 @@
         <h1>📈 Trading Returns Tracker</h1>
         
         <div class="description">
-            <p>Welcome to our comprehensive <strong>Trading Returns Calculator</strong> and <strong>compound interest tracker</strong> for active traders. This powerful trading profit calculator helps you visualize how consistent returns compound over time with realistic trading fees included. Whether you're day trading, swing trading, or practicing algorithmic trading strategies, this tool demonstrates the power of compounding returns and helps you understand how many trades it takes to reach significant milestones like $1 million. Perfect for forex traders, stock traders, and crypto investors who want to model their trading performance with 2.8% returns per trade and 0.3% trading fees. Use this free trading calculator to plan your path to financial independence through consistent, disciplined trading.</p>
+            <p>Welcome to our comprehensive <strong>Trading Returns Calculator</strong> and <strong>compound interest tracker</strong> for active traders. This powerful trading profit calculator helps you visualize how consistent returns compound over time with realistic trading fees included. Whether you're day trading, swing trading, or practicing algorithmic trading strategies, this tool demonstrates the power of compounding returns and helps you understand how many trades it takes to reach significant milestones like $1 million. Perfect for forex traders, stock traders, and crypto investors who want to model their trading performance with customizable returns per trade and trading fees. Use this free trading calculator to plan your path to financial independence through consistent, disciplined trading.</p>
         </div>
         
+        <div class="input-section">
+            <div class="input-group">
+                <label for="startingPrincipalInput">Starting Principal ($):</label>
+                <input type="number" id="startingPrincipalInput" value="21000" min="1000" step="1000">
+            </div>
+            <div class="input-group">
+                <label for="returnRateInput">Return per Trade (%):</label>
+                <input type="number" id="returnRateInput" value="2.8" min="0" max="100" step="0.2">
+            </div>
+            <div class="input-group">
+                <label for="feeRateInput">Fee per Trade (%):</label>
+                <input type="number" id="feeRateInput" value="0.3" min="0" max="10" step="0.1">
+            </div>
+            <button id="calculateBtn">Calculate Returns</button>
+        </div>
+
         <div class="summary">
-            <p><strong>Starting Principal:</strong> <span class="currency">$20,000.00</span></p>
-            <p><strong>Return per Trade:</strong> 2.8%</p>
-            <p><strong>Fee per Trade:</strong> 0.3%</p>
-            <p><strong>Net Gain per Trade:</strong> 2.5%</p>
+            <p><strong>Starting Principal:</strong> <span class="currency" id="displayPrincipal">$21,000.00</span></p>
+            <p><strong>Return per Trade:</strong> <span id="displayReturn">2.8%</span></p>
+            <p><strong>Fee per Trade:</strong> <span id="displayFee">0.3%</span></p>
+            <p><strong>Net Gain per Trade:</strong> <span id="displayNetGain">2.5%</span></p>
             <p><strong>Trades to reach $1M:</strong> <span id="tradesToMillion"></span></p>
         </div>
 
@@ -175,7 +238,7 @@
 
             <div class="faq-item">
                 <div class="faq-question">Q: Can I customize the starting principal, return rate, or fees?</div>
-                <div class="faq-answer">A: This calculator is currently set to show results with $15,000 starting capital, 2.8% returns, and 0.3% fees. These parameters are commonly used as benchmarks for active trading strategies. While the current version has fixed parameters, the calculator demonstrates the fundamental principles of compound growth that apply to any trading scenario with consistent percentage returns.</div>
+                <div class="faq-answer">A: Yes! This calculator allows you to input your own starting capital, return percentage per trade, and fee percentage. Simply enter your values in the input fields above and click "Calculate Returns" to see how your specific scenario would play out. The calculator demonstrates the fundamental principles of compound growth that apply to any trading scenario with consistent percentage returns.</div>
             </div>
         </div>
 
@@ -183,52 +246,104 @@
     </div>
 
     <script>
-        const startingPrincipal = 20000;
-        const returnRate = 0.028;
-        const feeRate = 0.003;
-        const netGainRate = returnRate - feeRate;
+        // Default values
+        let startingPrincipal = 21000;
+        let returnRate = 0.028;
+        let feeRate = 0.003;
+        let netGainRate = returnRate - feeRate;
         const numTrades = 40;
-        const highlightTrades = [1, 5, 10, 15, 20,25,30, 35,40];
+        const highlightTrades = [1, 5, 10, 15, 20, 25, 30, 35, 40];
 
         // Calculate trades to reach $1M
-        function calculateTradesToMillion() {
-            let p = startingPrincipal;
+        function calculateTradesToMillion(principal, netRate) {
+            let p = principal;
             let trades = 0;
-            while (p < 1000000) {
-                p = p * (1 + netGainRate);
+            while (p < 1000000 && trades < 10000) { // Safety limit
+                p = p * (1 + netRate);
                 trades++;
             }
-            return trades;
+            return trades < 10000 ? trades : 'N/A';
         }
 
-        const tradesToMillion = calculateTradesToMillion();
-        document.getElementById('tradesToMillion').textContent = tradesToMillion + ' trades';
+        // Update display
+        function updateDisplay() {
+            document.getElementById('displayPrincipal').textContent = `$${startingPrincipal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('displayReturn').textContent = `${(returnRate * 100).toFixed(1)}%`;
+            document.getElementById('displayFee').textContent = `${(feeRate * 100).toFixed(1)}%`;
+            document.getElementById('displayNetGain').textContent = `${(netGainRate * 100).toFixed(1)}%`;
+            
+            const tradesToMillion = calculateTradesToMillion(startingPrincipal, netGainRate);
+            document.getElementById('tradesToMillion').textContent = tradesToMillion === 'N/A' ? 'N/A (too many trades)' : `${tradesToMillion} trades`;
+        }
 
-        let principal = startingPrincipal;
-        const tbody = document.getElementById('tradesBody');
+        // Generate table
+        function generateTable() {
+            const tbody = document.getElementById('tradesBody');
+            tbody.innerHTML = ''; // Clear existing rows
+            
+            let principal = startingPrincipal;
 
-        for (let i = 1; i <= numTrades; i++) {
-            const returns = principal * returnRate;
-            const fees = principal * feeRate;
-            const newPrincipal = principal + returns - fees;
-            const percentChange = ((newPrincipal - startingPrincipal) / startingPrincipal) * 100;
+            for (let i = 1; i <= numTrades; i++) {
+                const returns = principal * returnRate;
+                const fees = principal * feeRate;
+                const newPrincipal = principal + returns - fees;
+                const percentChange = ((newPrincipal - startingPrincipal) / startingPrincipal) * 100;
 
-            const row = document.createElement('tr');
-            if (highlightTrades.includes(i)) {
-                row.classList.add('highlight');
+                const row = document.createElement('tr');
+                if (highlightTrades.includes(i)) {
+                    row.classList.add('highlight');
+                }
+
+                row.innerHTML = `
+                    <td><strong>${i}</strong></td>
+                    <td class="currency positive">$${returns.toFixed(2)}</td>
+                    <td class="currency">$${fees.toFixed(2)}</td>
+                    <td class="currency"><strong>$${newPrincipal.toFixed(2)}</strong></td>
+                    <td class="positive">+${percentChange.toFixed(2)}%</td>
+                `;
+
+                tbody.appendChild(row);
+                principal = newPrincipal;
+            }
+        }
+
+        // Calculate button handler
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const principalInput = parseFloat(document.getElementById('startingPrincipalInput').value);
+            const returnInput = parseFloat(document.getElementById('returnRateInput').value);
+            const feeInput = parseFloat(document.getElementById('feeRateInput').value);
+
+            // Validation
+            if (isNaN(principalInput) || principalInput <= 0) {
+                alert('Please enter a valid starting principal greater than 0');
+                return;
+            }
+            if (isNaN(returnInput) || returnInput < 0) {
+                alert('Please enter a valid return rate (0 or greater)');
+                return;
+            }
+            if (isNaN(feeInput) || feeInput < 0) {
+                alert('Please enter a valid fee rate (0 or greater)');
+                return;
+            }
+            if (feeInput >= returnInput) {
+                alert('Warning: Fee rate is equal to or greater than return rate. Net gain will be zero or negative.');
             }
 
-            row.innerHTML = `
-                <td><strong>${i}</strong></td>
-                <td class="currency positive">$${returns.toFixed(2)}</td>
-                <td class="currency">$${fees.toFixed(2)}</td>
-                <td class="currency"><strong>$${newPrincipal.toFixed(2)}</strong></td>
-                <td class="positive">+${percentChange.toFixed(2)}%</td>
-            `;
+            // Update values
+            startingPrincipal = principalInput;
+            returnRate = returnInput / 100;
+            feeRate = feeInput / 100;
+            netGainRate = returnRate - feeRate;
 
-            tbody.appendChild(row);
-            principal = newPrincipal;
-        }
+            // Update display and regenerate table
+            updateDisplay();
+            generateTable();
+        });
+
+        // Initialize on page load
+        updateDisplay();
+        generateTable();
     </script>
 </body>
 </html>
