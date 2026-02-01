@@ -176,11 +176,11 @@
         <div class="input-section">
             <div class="input-group">
                 <label for="startingPrincipalInput">Starting Principal ($):</label>
-                <input type="number" id="startingPrincipalInput" value="21000" min="1000" step="1000">
+                <input type="number" id="startingPrincipalInput" value="17300" min="1000" step="1000">
             </div>
             <div class="input-group">
                 <label for="returnRateInput">Return per Trade (%):</label>
-                <input type="number" id="returnRateInput" value="2.8" min="0" max="100" step="0.2">
+                <input type="number" id="returnRateInput" value="5.8" min="0" max="100" step="0.2">
             </div>
             <div class="input-group">
                 <label for="feeRateInput">Fee per Trade (%):</label>
@@ -195,6 +195,7 @@
             <p><strong>Fee per Trade:</strong> <span id="displayFee">0.3%</span></p>
             <p><strong>Net Gain per Trade:</strong> <span id="displayNetGain">2.5%</span></p>
             <p><strong>Trades to reach $1M:</strong> <span id="tradesToMillion"></span></p>
+            <p><strong>Trades to double principal:</strong> <span id="tradesToDouble"></span></p>
         </div>
 
         <div class="table-container">
@@ -247,8 +248,8 @@
 
     <script>
         // Default values
-        let startingPrincipal = 21000;
-        let returnRate = 0.028;
+        let startingPrincipal = 17300;
+        let returnRate = 0.058;
         let feeRate = 0.003;
         let netGainRate = returnRate - feeRate;
         const numTrades = 40;
@@ -265,6 +266,19 @@
             return trades < 10000 ? trades : 'N/A';
         }
 
+        // Calculate trades to double principal
+        function calculateTradesToDouble(principal, netRate) {
+            if (netRate <= 0) return 'N/A';
+            let p = principal;
+            let trades = 0;
+            const target = principal * 2;
+            while (p < target && trades < 10000) { // Safety limit
+                p = p * (1 + netRate);
+                trades++;
+            }
+            return trades < 10000 ? trades : 'N/A';
+        }
+
         // Update display
         function updateDisplay() {
             document.getElementById('displayPrincipal').textContent = `$${startingPrincipal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -274,6 +288,9 @@
             
             const tradesToMillion = calculateTradesToMillion(startingPrincipal, netGainRate);
             document.getElementById('tradesToMillion').textContent = tradesToMillion === 'N/A' ? 'N/A (too many trades)' : `${tradesToMillion} trades`;
+
+            const tradesToDouble = calculateTradesToDouble(startingPrincipal, netGainRate);
+            document.getElementById('tradesToDouble').textContent = tradesToDouble === 'N/A' ? 'N/A' : `${tradesToDouble} trades`;
         }
 
         // Generate table
